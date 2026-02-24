@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Dolce Vita · День рождения Дины</title>
+  <!-- Подключение шрифтов и иконок -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Tenor+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Подключение внешнего CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="invitation-card">
+    <!-- Hero секция с итальянским пейзажем -->
+    <div class="hero">
+      <div class="hero-content">
+        <h1>La Dolce Vita</h1>
+        <div class="sub">день рождения Дины</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Текст приглашения -->
+      <div class="message">
+        <i class="fas fa-quote-left"></i> В этом году я праздную день рождения в стиле солнечной Италии! Буду рада видеть вас 21 марта в 17.00 по адресу Кабанбай батыра 45/1, ресторан Lia.
+        Будет много вкусной еды, музыки и атмосферы настоящего итальянского вечера.
+        И, конечно, очень приветствуется дресс-код: всё в итальянском стиле — от элегантной классики до образов в духе Рима, Милана или сицилийских каникул.
+        Прошу подтвердить ваше присутствие. Искренне ваша, Дина. <i class="fas fa-quote-right"></i>
+      </div>
+
+      <!-- Карточки с деталями -->
+      <div class="details-grid">
+        <!-- Карточка "Когда" -->
+        <div class="card">
+          <i class="fas fa-calendar-alt"></i>
+          <h3>Когда</h3>
+          <p>21 марта 2026</p>
+          <p class="small">17:00 • вечер</p>
+        </div>
+        
+        <!-- Карточка "Где" -->
+        <div class="card">
+          <i class="fas fa-map-pin"></i>
+          <h3>Где</h3>
+          <p>Ресторан Lía</p>
+          <p class="small">Кабанбай батыра 45/1</p>
+          <a href="https://go.2gis.com/833J5" class="map-link" target="_blank" aria-label="Открыть карту">
+            <i class="fas fa-map-marked-alt"></i>
+          </a>
+        </div>
+        
+        <!-- Карточка "Атмосфера" -->
+        <div class="card">
+          <i class="fas fa-utensils"></i>
+          <h3>Атмосфера</h3>
+          <p>итальянский ужин, живая музыка, лимоны и оливки</p>
+        </div>
+      </div>
+
+      <!-- Блок дресс-кода -->
+      <div class="dresscode">
+        <h2>Дресс-код</h2>
+        <div class="style-icons">
+          <div class="style-item">
+            <i class="fas fa-vest"></i>
+            <span>Элегантная классика</span>
+            <small>чёрное платье, костюм</small>
+          </div>
+          <div class="style-item">
+            <i class="fas fa-city"></i>
+            <span>Рим / Милан</span>
+            <small>стильные аксессуары, пальто</small>
+          </div>
+          <div class="style-item">
+            <i class="fas fa-umbrella-beach"></i>
+            <span>Сицилийские каникулы</span>
+            <small>цветочные принты, шляпы, лён</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Форма RSVP -->
+      <div class="rsvp-section">
+        <div class="rsvp-title">
+          <i class="fas fa-check-circle" style="color:#9f7e3f;"></i> Sarò presente?
+          <i class="fas fa-wine-glass-alt" style="color:#b34f2a;"></i>
+        </div>
+        
+        <form id="rsvpForm" class="rsvp-form">
+          <div class="form-row">
+            <div class="form-group">
+              <input type="text" id="name" name="name" placeholder="Ваше имя и фамилия" required>
+            </div>
+            <div class="form-group">
+              <select id="presence" name="presence" required>
+                <option value="" disabled selected>— выберите —</option>
+                <option value="Буду с удовольствием!"> Буду с удовольствием!</option>
+                <option value="Не смогу, к сожалению"> Не смогу, к сожалению</option>
+                <option value="Буду не один/одна (+1)"> Буду не один / одна (+1)</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <i class="fas fa-envelope"></i> Подтвердить / Conferma
+          </button>
+        </form>
+        
+        <div id="rsvpMessage" class="hidden">
+          <i class="fas fa-heart" style="color:#c74040;"></i> Grazie mille! Жду вас!
+        </div>
+
+        <div id="rsvpError" class="hidden">
+          <i class="fas fa-exclamation-circle"></i> Произошла ошибка. Попробуйте позже или свяжитесь с Диной.
+        </div>
+        
+        <p class="contact-info">
+          <i class="fas fa-phone-alt"></i> Есть вопросы? Свяжитесь с Диной: 
+          <a href="https://wa.me/77771234567" target="_blank" rel="noopener noreferrer">+7 777 123 45 67</a> 
+          (WhatsApp/Telegram)
+        </p>
+      </div>
+
+      <!-- Футер -->
+      <footer>
+        <i class="fas fa-lemon"></i> Limoni, ulivi e musica italiana <i class="fas fa-music"></i> <br>
+        Если вы захотите порадовать именинницу — достаточно вашего присутствия, но сюрпризы приветствуются!
+      </footer>
+    </div>
+  </div>
+
+  <!-- Подключение внешнего JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
