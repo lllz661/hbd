@@ -1,6 +1,6 @@
 (function() {
   // ⚠️ ВАШ URL (тот, что вы получили при публикации)
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPw0m50WpoSVwa2J8s6apEVaSEVmNBo5PogzHobOSdF-xo6LdZ6F8XP2EkzyiqZ2zO/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP93YODvhNz57UKsyxIKNsOT8J0PHSPfWp-KB7YP0lc8TLYQNweEFcKk47w7jGwIzi/exec';
 
   const form = document.getElementById('rsvpForm');
   const messageDiv = document.getElementById('rsvpMessage');
@@ -10,7 +10,7 @@
   const presenceSelect = document.getElementById('presence');
 
   if (form) {
-    form.addEventListener('submit', async function(e) {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
 
       if (!nameInput.value.trim() || !presenceSelect.value) {
@@ -22,6 +22,7 @@
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
       errorDiv.classList.add('hidden');
 
+      // Форматируем дату
       const now = new Date();
       const timestamp = now.toLocaleString('ru-RU', { 
         timeZone: 'Asia/Almaty',
@@ -33,38 +34,49 @@
         second: '2-digit'
       });
 
-      try {
-        // Используем FormData вместо URLSearchParams
-        const formData = new FormData();
-        formData.append('name', nameInput.value.trim());
-        formData.append('presence', presenceSelect.value);
-        formData.append('timestamp', timestamp);
+      // Создаем URL с данными в GET параметрах
+      const url = new URL(SCRIPT_URL);
+      url.searchParams.append('name', nameInput.value.trim());
+      url.searchParams.append('presence', presenceSelect.value);
+      url.searchParams.append('timestamp', timestamp);
+      
+      console.log('📤 Отправка данных через iframe...');
+      console.log('URL:', url.toString());
 
-        // Отправляем с mode: 'no-cors' — это ключевой момент!
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',  // Это обходит CORS
-          body: formData
-        });
-
-        // При no-cors мы не можем прочитать ответ, 
-        // поэтому просто показываем успех
-        console.log('✅ Данные отправлены (no-cors)');
+      // Создаем невидимый iframe
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = url.toString();
+      
+      // Когда iframe загрузится - значит данные отправились
+      iframe.onload = function() {
+        console.log('✅ Iframe загружен, данные отправлены');
         
+        // Убираем iframe
+        setTimeout(() => {
+          document.body.removeChild(iframe);
+        }, 1000);
+        
+        // Показываем успех
         form.classList.add('hidden');
         messageDiv.classList.remove('hidden');
+      };
 
-      } catch (error) {
-        console.error('❌ Ошибка:', error);
+      // Если ошибка
+      iframe.onerror = function() {
+        console.error('❌ Ошибка загрузки iframe');
+        
+        document.body.removeChild(iframe);
         
         errorDiv.classList.remove('hidden');
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-envelope"></i> Подтвердить / Conferma';
-      }
+      };
+
+      // Добавляем iframe на страницу
+      document.body.appendChild(iframe);
     });
   }
 
-  // Проверка подключения (опционально)
-  console.log('🔍 Форма готова к работе на GitHub Pages');
+  console.log('🚀 Скрипт загружен, форма готова к работе');
 })();
-
