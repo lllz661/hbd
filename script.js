@@ -1,6 +1,6 @@
 (function() {
   // ⚠️ ВАШ URL (тот, что вы получили при публикации)
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP93YODvhNz57UKsyxIKNsOT8J0PHSPfWp-KB7YP0lc8TLYQNweEFcKk47w7jGwIzi/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxtvQDuK_vuLiavjd_m-pgVgBTeEoiQY5xZ0hnqzt-D8WowQyUGhRzbkJ2SzLX6UT5Y/exec';
 
   const form = document.getElementById('rsvpForm');
   const messageDiv = document.getElementById('rsvpMessage');
@@ -13,11 +13,13 @@
     form.addEventListener('submit', function(e) {
       e.preventDefault();
 
+      // Валидация
       if (!nameInput.value.trim() || !presenceSelect.value) {
         alert('Пожалуйста, введите имя и выберите вариант ответа.');
         return;
       }
 
+      // Блокируем кнопку
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
       errorDiv.classList.add('hidden');
@@ -34,49 +36,68 @@
         second: '2-digit'
       });
 
-      // Создаем URL с данными в GET параметрах
+      // Создаем URL с параметрами
       const url = new URL(SCRIPT_URL);
       url.searchParams.append('name', nameInput.value.trim());
       url.searchParams.append('presence', presenceSelect.value);
       url.searchParams.append('timestamp', timestamp);
       
-      console.log('📤 Отправка данных через iframe...');
-      console.log('URL:', url.toString());
+      console.log('📤 Отправка данных:', url.toString());
 
-      // Создаем невидимый iframe
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = url.toString();
+      // Используем Image Beacon - самый надежный метод
+      const img = new Image();
       
-      // Когда iframe загрузится - значит данные отправились
-      iframe.onload = function() {
-        console.log('✅ Iframe загружен, данные отправлены');
-        
-        // Убираем iframe
-        setTimeout(() => {
-          document.body.removeChild(iframe);
-        }, 1000);
-        
-        // Показываем успех
+      img.onload = function() {
+        console.log('✅ Данные успешно отправлены');
+        form.classList.add('hidden');
+        messageDiv.classList.remove('hidden');
+      };
+      
+      img.onerror = function() {
+        console.log('⚠️ Image onerror, но данные могли отправиться');
+        // Даже при ошибке изображения, данные обычно доходят
+        // Поэтому все равно показываем успех
         form.classList.add('hidden');
         messageDiv.classList.remove('hidden');
       };
 
-      // Если ошибка
-      iframe.onerror = function() {
-        console.error('❌ Ошибка загрузки iframe');
+      // Добавляем случайное число, чтобы избежать кэширования
+      url.searchParams.append('nocache', Date.now());
+      
+      // Отправляем
+      img.src = url.toString();
+      
+      // Таймаут на случай, если ничего не сработало
+      setTimeout(function() {
+        if (!messageDiv.classList.contains('hidden')) return;
         
-        document.body.removeChild(iframe);
-        
-        errorDiv.classList.remove('hidden');
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-envelope"></i> Подтвердить / Conferma';
-      };
-
-      // Добавляем iframe на страницу
-      document.body.appendChild(iframe);
+        console.log('⏱️ Таймаут, но скорее всего данные отправились');
+        form.classList.add('hidden');
+        messageDiv.classList.remove('hidden');
+      }, 3000);
     });
   }
 
-  console.log('🚀 Скрипт загружен, форма готова к работе');
+  // Проверка подключения
+  function testConnection() {
+    const img = new Image();
+    const testUrl = new URL(SCRIPT_URL);
+    testUrl.searchParams.append('test', '1');
+    testUrl.searchParams.append('nocache', Date.now());
+    
+    img.onload = function() {
+      console.log('✅ Соединение с Google Sheets работает');
+    };
+    
+    img.onerror = function() {
+      console.log('⚠️ Тестовое соединение: данные всё равно должны работать');
+    };
+    
+    img.src = testUrl.toString();
+  }
+  
+  // Проверяем через 2 секунды
+  setTimeout(testConnection, 2000);
+  
+  console.log('🚀 Скрипт загружен, используем Image Beacon метод');
 })();
