@@ -1,6 +1,6 @@
 (function() {
   // ⚠️ ВАШ URL (тот, что вы получили при публикации)
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXhBENrZ4EivWNnPbxuDECZHgKiyXOFRfUHCA_ZKd7m95GPhz-kpCyJxrOEGy3z8Eq/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPw0m50WpoSVwa2J8s6apEVaSEVmNBo5PogzHobOSdF-xo6LdZ6F8XP2EkzyiqZ2zO/exec';
 
   const form = document.getElementById('rsvpForm');
   const messageDiv = document.getElementById('rsvpMessage');
@@ -67,3 +67,4 @@
   // Проверка подключения (опционально)
   console.log('🔍 Форма готова к работе на GitHub Pages');
 })();
+
