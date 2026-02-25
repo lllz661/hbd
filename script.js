@@ -1,5 +1,5 @@
 (function() {
-  // ⚠️ ВАШ URL (тот, что получили при публикации)
+  // ⚠️ ВАШ URL (тот, что вы получили при публикации)
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXhBENrZ4EivWNnPbxuDECZHgKiyXOFRfUHCA_ZKd7m95GPhz-kpCyJxrOEGy3z8Eq/exec';
 
   const form = document.getElementById('rsvpForm');
@@ -34,94 +34,36 @@
       });
 
       try {
-        // Сначала пробуем через fetch с CORS
-        const response = await fetch(SCRIPT_URL, {
+        // Используем FormData вместо URLSearchParams
+        const formData = new FormData();
+        formData.append('name', nameInput.value.trim());
+        formData.append('presence', presenceSelect.value);
+        formData.append('timestamp', timestamp);
+
+        // Отправляем с mode: 'no-cors' — это ключевой момент!
+        await fetch(SCRIPT_URL, {
           method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            name: nameInput.value.trim(),
-            presence: presenceSelect.value,
-            timestamp: timestamp
-          })
+          mode: 'no-cors',  // Это обходит CORS
+          body: formData
         });
 
-        const result = await response.json();
-        console.log('✅ Ответ:', result);
-
-        if (result.success) {
-          form.classList.add('hidden');
-          messageDiv.classList.remove('hidden');
-        } else {
-          throw new Error('Ошибка сервера');
-        }
-
-      } catch (error) {
-        console.log('⚠️ Fetch не сработал, пробуем JSONP...');
+        // При no-cors мы не можем прочитать ответ, 
+        // поэтому просто показываем успех
+        console.log('✅ Данные отправлены (no-cors)');
         
-        // Если fetch не сработал, пробуем JSONP
-        sendViaJSONP();
-      }
-    });
-  }
-
-  // Запасной вариант через JSONP
-  function sendViaJSONP() {
-    const now = new Date();
-    const timestamp = now.toLocaleString('ru-RU', { 
-      timeZone: 'Asia/Almaty',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
-
-    const url = new URL(SCRIPT_URL);
-    url.searchParams.append('name', nameInput.value.trim());
-    url.searchParams.append('presence', presenceSelect.value);
-    url.searchParams.append('timestamp', timestamp);
-    
-    const callbackName = 'callback_' + Date.now();
-    url.searchParams.append('callback', callbackName);
-    
-    window[callbackName] = function(response) {
-      console.log('✅ JSONP ответ:', response);
-      
-      if (response && response.success) {
         form.classList.add('hidden');
         messageDiv.classList.remove('hidden');
-      } else {
+
+      } catch (error) {
+        console.error('❌ Ошибка:', error);
+        
         errorDiv.classList.remove('hidden');
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-envelope"></i> Подтвердить / Conferma';
       }
-      
-      delete window[callbackName];
-      document.head.removeChild(script);
-    };
-
-    const script = document.createElement('script');
-    script.src = url.toString();
-    
-    script.onerror = function() {
-      console.error('❌ JSONP ошибка');
-      errorDiv.classList.remove('hidden');
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = '<i class="fas fa-envelope"></i> Подтвердить / Conferma';
-    };
-
-    document.head.appendChild(script);
+    });
   }
 
-  // Проверка подключения
-  console.log('🔍 Проверка подключения к скрипту...');
-  
-  fetch(SCRIPT_URL)
-    .then(r => r.json())
-    .then(data => console.log('✅ Скрипт доступен:', data))
-    .catch(err => console.log('⚠️ Fetch не работает, но JSONP должен работать'));
+  // Проверка подключения (опционально)
+  console.log('🔍 Форма готова к работе на GitHub Pages');
 })();
