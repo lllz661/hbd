@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎂 С днем рождения Алека!!</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+</head>
+<body>
+
+  <div class="container">
+    <div class="cake-scene" id="cakeScene">
+      <div class="candles-container" id="candlesContainer">
+        <div class="candle">
+          <div class="flame" id="flame1"></div>
+          <div class="smoke" id="smoke1"></div>
+        </div>
+        <div class="candle">
+          <div class="flame" id="flame2"></div>
+          <div class="smoke" id="smoke2"></div>
+        </div>
+        <div class="candle">
+          <div class="flame" id="flame3"></div>
+          <div class="smoke" id="smoke3"></div>
+        </div>
+        <div class="candle">
+          <div class="flame" id="flame4"></div>
+          <div class="smoke" id="smoke4"></div>
+        </div>
+        <div class="candle">
+          <div class="flame" id="flame5"></div>
+          <div class="smoke" id="smoke5"></div>
+        </div>
+      </div>
+
+      <div class="cake">
+        <div class="cake-layer-top"></div>
+        <div class="cream-layer"></div>
+        <div class="cake-layer-bottom"></div>
+        <div class="cake-stand"></div>
+      </div>
+    </div>
+
+    <p class="instruction" id="instruction">
+       Нажми кнопку и подуй в микрофон,<br>чтобы задуть свечи!
+    </p>
+
+    <button class="mic-btn" id="micButton" onclick="toggleMicrophone()">
+       Задуть свечи!
+    </button>
+
+    <div class="greetings-section" id="greetingsSection">
+      <div class="greeting-card">
+        <h1> С Днём Рождения, Алиюша! </h1>
+        
+        <div class="cards-slider" id="cardsSlider">
+          <div class="card active" data-index="0">
+            <div class="card-content">
+              <p class="card-message">
+                Поздравляяяюю, хочу пожелать тебе в первую очередь крепчайшего здоровья, ведь как же без него?
+              </p>
+              <span class="card-signature">Сережа</span>
+            </div>
+          </div>
+
+          <div class="card" data-index="1">
+            <div class="card-content">
+              <p class="card-message">
+                Дальше хочу пожелать тебе счастья, ведь это самое важное в жизни, а также успехов во всех твоих начинаниях и чтобы все твои мечты сбывались!
+              </p>
+              <span class="card-signature">Серега</span>
+            </div>
+          </div>
+
+          <div class="card" data-index="2">
+            <div class="card-content">
+              <p class="card-message">
+                И конечно же, побольше проектов, которые тебе по душе, и чтобы ты всегда была окружена хорошими и поддерживающими тебя людьми!
+              </p>
+              <span class="card-signature">Тайный друг кореец</span>
+            </div>
+          </div>
+
+          <div class="card" data-index="3">
+            <div class="card-content">
+              <p class="card-message">
+                Вообще, я не знаю, что тебе пожелать, потому что ты уже такая классная и замечательная, что кажется, что тебе уже всё есть! Поэтому просто желаю тебе продолжать быть такой же крутой и вдохновляющей личностью, какой ты уже являешься!
+              </p>
+              <span class="card-signature">Серго(Еле вспоминал формы имени)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider-navigation">
+          <button class="nav-arrow" id="prevArrow" onclick="prevCard()">←</button>
+          <div class="dots-container" id="dotsContainer"></div>
+          <button class="nav-arrow" id="nextArrow" onclick="nextCard()">→</button>
+        </div>
+
+        <button class="confetti-btn" onclick="launchConfetti()">🎂 Ещё конфетти!</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
